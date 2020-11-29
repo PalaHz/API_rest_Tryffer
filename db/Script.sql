@@ -35,14 +35,14 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`negocio` (
   `idnegocio` VARCHAR(20) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `descripcion` VARCHAR(250) NOT NULL,
-  `logo` BLOB NULL,
+  `logo` VARCHAR(100) NULL,
   `horaApertura` TIME NOT NULL,
   `horaCierre` TIME NOT NULL,
   `telefono` VARCHAR(10) NULL,
   `sitioWeb` VARCHAR(45) NULL,
   `representante` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`idnegocio`),
-  INDEX `fk_negocio_representante_idx` (`representante` ASC)  ,
+  INDEX `fk_negocio_representante_idx` (`representante` ASC) VISIBLE,
   CONSTRAINT `fk_negocio_representante`
     FOREIGN KEY (`representante`)
     REFERENCES `tryffer`.`representante` (`idrepresentante`)
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`ubicacion` (
   `latitud` FLOAT NOT NULL,
   `longitud` FLOAT NOT NULL,
   PRIMARY KEY (`idubicacion`),
-  INDEX `fk_ubicacion_negocio1_idx` (`negocio_idnegocio` ASC)  ,
+  INDEX `fk_ubicacion_negocio1_idx` (`negocio_idnegocio` ASC) VISIBLE,
   CONSTRAINT `fk_ubicacion_negocio1`
     FOREIGN KEY (`negocio_idnegocio`)
     REFERENCES `tryffer`.`negocio` (`idnegocio`)
@@ -69,6 +69,19 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`ubicacion` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE TABLE `tryffer`.`subcategoria` (
+  `idsubcategoria` INT NOT NULL,
+  `nombre` VARCHAR(45) NULL,
+  `imgSubcat` VARCHAR(45) NULL,
+  `descripcion` VARCHAR(150) NULL,
+  `idcategoria` INT NULL,
+  PRIMARY KEY (`idsubcategoria`),
+  INDEX `idcategoria_idx` (`idcategoria` ASC) VISIBLE,
+  CONSTRAINT `idcategoria`
+    FOREIGN KEY (`idcategoria`)
+    REFERENCES `tryffer`.`categoria` (`idcategoria`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
 -- -----------------------------------------------------
 -- Table `tryffer`.`producto`
@@ -78,11 +91,10 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`producto` (
   `nombre` VARCHAR(45) NOT NULL,
   `precio` FLOAT NOT NULL,
   `detalle` VARCHAR(100) NOT NULL,
-  `img` BLOB NULL,
   `disponibilidad` INT NOT NULL,
   `negocio_idnegocio` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`idproductos`),
-  INDEX `fk_productos_negocio1_idx` (`negocio_idnegocio` ASC)  ,
+  INDEX `fk_productos_negocio1_idx` (`negocio_idnegocio` ASC) VISIBLE,
   CONSTRAINT `fk_productos_negocio1`
     FOREIGN KEY (`negocio_idnegocio`)
     REFERENCES `tryffer`.`negocio` (`idnegocio`)
@@ -104,8 +116,9 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`oferta` (
   `repiteSemanal` INT NOT NULL,
   `repiteMensual` INT NOT NULL,
   `producto_idproductos` VARCHAR(45) NOT NULL,
+  `imagen` VARCHAR(100) NULL,
   PRIMARY KEY (`idofertas`),
-  INDEX `fk_oferta_producto1_idx` (`producto_idproductos` ASC)  ,
+  INDEX `fk_oferta_producto1_idx` (`producto_idproductos` ASC) VISIBLE,
   CONSTRAINT `fk_oferta_producto1`
     FOREIGN KEY (`producto_idproductos`)
     REFERENCES `tryffer`.`producto` (`idproductos`)
@@ -120,7 +133,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `tryffer`.`categoria` (
   `idcategoria` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
-  `img` BLOB NOT NULL,
+  `imgCategoria` VARCHAR(100) NOT NULL,
   `descripcion` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idcategoria`))
 ENGINE = InnoDB;
@@ -133,8 +146,8 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`negocioTieneCategorias` (
   `negocio_idnegocio` VARCHAR(20) NOT NULL,
   `categoria_idcategoria` INT NOT NULL,
   PRIMARY KEY (`negocio_idnegocio`, `categoria_idcategoria`),
-  INDEX `fk_negocio_has_categoria_categoria1_idx` (`categoria_idcategoria` ASC)  ,
-  INDEX `fk_negocio_has_categoria_negocio1_idx` (`negocio_idnegocio` ASC)  ,
+  INDEX `fk_negocio_has_categoria_categoria1_idx` (`categoria_idcategoria` ASC) VISIBLE,
+  INDEX `fk_negocio_has_categoria_negocio1_idx` (`negocio_idnegocio` ASC) VISIBLE,
   CONSTRAINT `fk_negocio_has_categoria_negocio1`
     FOREIGN KEY (`negocio_idnegocio`)
     REFERENCES `tryffer`.`negocio` (`idnegocio`)
@@ -157,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`usuario` (
   `apellido` VARCHAR(60) NOT NULL,
   `correo` VARCHAR(80) NOT NULL,
   `contrasenia` VARCHAR(80) NOT NULL,
-  `foto` BLOB NULL,
+  `foto` VARCHAR(100) NULL,
   PRIMARY KEY (`idusuario`))
 ENGINE = InnoDB;
 
@@ -169,8 +182,8 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`UsuarioPreferencias` (
   `usuario_idusuario` VARCHAR(45) NOT NULL,
   `categoria_idcategoria` INT NOT NULL,
   PRIMARY KEY (`usuario_idusuario`, `categoria_idcategoria`),
-  INDEX `fk_usuario_has_categoria_categoria1_idx` (`categoria_idcategoria` ASC)  ,
-  INDEX `fk_usuario_has_categoria_usuario1_idx` (`usuario_idusuario` ASC)  ,
+  INDEX `fk_usuario_has_categoria_categoria1_idx` (`categoria_idcategoria` ASC) VISIBLE,
+  INDEX `fk_usuario_has_categoria_usuario1_idx` (`usuario_idusuario` ASC) VISIBLE,
   CONSTRAINT `fk_usuario_has_categoria_usuario1`
     FOREIGN KEY (`usuario_idusuario`)
     REFERENCES `tryffer`.`usuario` (`idusuario`)
@@ -192,8 +205,8 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`valoracion` (
   `comentario` VARCHAR(200) NULL,
   `estrellas` INT NULL,
   `negocio_idnegocio` VARCHAR(20) NOT NULL,
-  INDEX `fk_Comentarios_usuario1_idx` (`usuario_idusuario` ASC)  ,
-  INDEX `fk_valoracion_negocio1_idx` (`negocio_idnegocio` ASC)  ,
+  INDEX `fk_Comentarios_usuario1_idx` (`usuario_idusuario` ASC) VISIBLE,
+  INDEX `fk_valoracion_negocio1_idx` (`negocio_idnegocio` ASC) VISIBLE,
   CONSTRAINT `fk_Comentarios_usuario1`
     FOREIGN KEY (`usuario_idusuario`)
     REFERENCES `tryffer`.`usuario` (`idusuario`)
@@ -215,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`tokens` (
   `usuario_idusuario` VARCHAR(45) NOT NULL,
   `token` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`idtokens`),
-  INDEX `fk_tokens_usuario1_idx` (`usuario_idusuario` ASC)  ,
+  INDEX `fk_tokens_usuario1_idx` (`usuario_idusuario` ASC) VISIBLE,
   CONSTRAINT `fk_tokens_usuario1`
     FOREIGN KEY (`usuario_idusuario`)
     REFERENCES `tryffer`.`usuario` (`idusuario`)
@@ -231,8 +244,8 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`UsuarioNegociosFavs` (
   `usuario_idusuario` VARCHAR(45) NOT NULL,
   `negocio_idnegocio` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`usuario_idusuario`, `negocio_idnegocio`),
-  INDEX `fk_usuario_has_negocio_negocio1_idx` (`negocio_idnegocio` ASC)  ,
-  INDEX `fk_usuario_has_negocio_usuario1_idx` (`usuario_idusuario` ASC)  ,
+  INDEX `fk_usuario_has_negocio_negocio1_idx` (`negocio_idnegocio` ASC) VISIBLE,
+  INDEX `fk_usuario_has_negocio_usuario1_idx` (`usuario_idusuario` ASC) VISIBLE,
   CONSTRAINT `fk_usuario_has_negocio_usuario1`
     FOREIGN KEY (`usuario_idusuario`)
     REFERENCES `tryffer`.`usuario` (`idusuario`)
@@ -254,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`Busquedas` (
   `busqueda` VARCHAR(45) NULL,
   `usuario_idusuario` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idBusquedas`),
-  INDEX `fk_Busquedas_usuario1_idx` (`usuario_idusuario` ASC)  ,
+  INDEX `fk_Busquedas_usuario1_idx` (`usuario_idusuario` ASC) VISIBLE,
   CONSTRAINT `fk_Busquedas_usuario1`
     FOREIGN KEY (`usuario_idusuario`)
     REFERENCES `tryffer`.`usuario` (`idusuario`)
@@ -280,8 +293,8 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`producto_has_etiquetas` (
   `producto_idproductos` VARCHAR(45) NOT NULL,
   `etiquetas_idetiquetas` INT NOT NULL,
   PRIMARY KEY (`producto_idproductos`, `etiquetas_idetiquetas`),
-  INDEX `fk_producto_has_etiquetas_etiquetas1_idx` (`etiquetas_idetiquetas` ASC)  ,
-  INDEX `fk_producto_has_etiquetas_producto1_idx` (`producto_idproductos` ASC)  ,
+  INDEX `fk_producto_has_etiquetas_etiquetas1_idx` (`etiquetas_idetiquetas` ASC) VISIBLE,
+  INDEX `fk_producto_has_etiquetas_producto1_idx` (`producto_idproductos` ASC) VISIBLE,
   CONSTRAINT `fk_producto_has_etiquetas_producto1`
     FOREIGN KEY (`producto_idproductos`)
     REFERENCES `tryffer`.`producto` (`idproductos`)
@@ -290,6 +303,23 @@ CREATE TABLE IF NOT EXISTS `tryffer`.`producto_has_etiquetas` (
   CONSTRAINT `fk_producto_has_etiquetas_etiquetas1`
     FOREIGN KEY (`etiquetas_idetiquetas`)
     REFERENCES `tryffer`.`etiquetas` (`idetiquetas`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `tryffer`.`ImagenProducto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tryffer`.`ImagenProducto` (
+  `idImagen` INT NOT NULL AUTO_INCREMENT,
+  `imagen` VARCHAR(100) NOT NULL,
+  `producto_idproductos` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idImagen`),
+  INDEX `fk_ImagenProducto_producto1_idx` (`producto_idproductos` ASC) VISIBLE,
+  CONSTRAINT `fk_ImagenProducto_producto1`
+    FOREIGN KEY (`producto_idproductos`)
+    REFERENCES `tryffer`.`producto` (`idproductos`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
