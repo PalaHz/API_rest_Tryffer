@@ -8,6 +8,9 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.json());
 
 // Routes
+app.get('/',(req,res) =>{
+    res.send('Bienvenido a Tryffer API');
+});
 app.use(require('./routes/usuario'));
 app.use(require('./routes/representante'));
 app.use(require('./routes/categoria'));
