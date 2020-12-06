@@ -6,9 +6,7 @@ const app = express();
 // Config
 
 app.set('port', process.env.PORT || 3000);
-app.listen(app.get('port'), () => {
-    wakeDyno(tryffer-apirest.herokuapp.com/usuario).start(); // DYNO_URL should be the url of your Heroku app
-});
+
 // Middlewares
 app.use(express.json());
 
@@ -21,5 +19,6 @@ app.use(require('./routes/representante'));
 app.use(require('./routes/categoria'));
 // Start server
 app.listen(app.get('port'), () => {
+    wakeDyno(tryffer-apirest.herokuapp.com/usuario).start();
     console.log ('server on port ', app.get('port'))
 });
