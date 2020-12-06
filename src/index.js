@@ -5,7 +5,7 @@ const app = express();
 
 // Config
 app.listen(PORT, () => {
-    wakeDyno(DYNO_URL).start(); // DYNO_URL should be the url of your Heroku app
+    wakeDyno(tryffer-apirest.herokuapp.com/usuario).start(); // DYNO_URL should be the url of your Heroku app
 });
 app.set('port', process.env.PORT || 3000);
 
