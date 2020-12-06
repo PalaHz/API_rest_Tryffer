@@ -19,6 +19,6 @@ app.use(require('./routes/representante'));
 app.use(require('./routes/categoria'));
 // Start server
 app.listen(app.get('port'), () => {
-    wakeDyno(tryffer-apirest.herokuapp.com/usuario).start();
+    wakeDyno('tryffer-apirest.herokuapp.com/usuario').start();
     console.log ('server on port ', app.get('port'))
 });
