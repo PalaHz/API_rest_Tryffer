@@ -1,7 +1,12 @@
 const express = require('express');
+const wakeDyno = require("woke-dyno");
 const app = express();
 
+
 // Config
+app.listen(PORT, () => {
+    wakeDyno(DYNO_URL).start(); // DYNO_URL should be the url of your Heroku app
+});
 app.set('port', process.env.PORT || 3000);
 
 // Middlewares
