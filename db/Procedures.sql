@@ -73,3 +73,28 @@ END$$
 
 DELIMITER ;
 ;
+
+USE `heroku_86fa010ccbe436d`;
+DROP procedure IF EXISTS `negocioAddOrEdit`;
+
+DELIMITER $$
+USE `heroku_86fa010ccbe436d`$$
+CREATE PROCEDURE `negocioAddOrEdit` (
+    IN _idnegocio VARCHAR(20),
+    IN _nombre VARCHAR(45),
+    IN _descripcion VARCHAR(250),
+    IN _logo VARCHAR(100),
+    IN _horaApertura TIME,
+    IN _horaCierre TIME,
+    IN _telefono VARCHAR(20),
+    IN _sitioWeb VARCHAR(45),
+    in _representante VARCHAR(20)
+)
+BEGIN
+    REPLACE INTO negocio(idnegocio, nombre, descripcion,
+    logo, horaApertura, horaCierre, telefono, sitioWeb, representante) 
+    VALUES (_idnegocio, _nombre, _descripcion,
+    _logo, _horaApertura, _horaCierre, _telefono, _sitioWeb, _representante);
+    SELECT _idnegocio AS idnegocio;
+END$$
+;
