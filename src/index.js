@@ -18,6 +18,7 @@ app.use(require('./routes/usuario'));
 app.use(require('./routes/representante'));
 app.use(require('./routes/categoria'));
 app.use(require('./routes/negocio'));
+app.use(require('./routes/ubicacion'));
 // Start server
 app.listen(app.get('port'), () => {
     console.log('Server on port', app.get('port'));
