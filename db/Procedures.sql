@@ -106,8 +106,8 @@ CREATE DEFINER=`b5a6f22084c6df`@`%` PROCEDURE `ubicacionAddOrEdit`(
 	IN _idubicacion VARCHAR(20),
     IN _negocio_idnegocio VARCHAR(20),
     IN _referencia VARCHAR(100),
-    IN _latitud FLOAT,
-    IN _longitud FLOAT
+    IN _latitud DECIMAL(10, 8),
+    IN _longitud DECIMAL(11, 8)
 )
 BEGIN
 	REPLACE INTO ubicacion(idubicacion, negocio_idnegocio, referencia,

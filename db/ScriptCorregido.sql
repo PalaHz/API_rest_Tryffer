@@ -58,8 +58,8 @@ CREATE TABLE IF NOT EXISTS `heroku_86fa010ccbe436d`.`ubicacion` (
   `idubicacion` INT NOT NULL AUTO_INCREMENT,
   `negocio_idnegocio` VARCHAR(20) NOT NULL,
   `referencia` VARCHAR(100) NULL,
-  `latitud` FLOAT NOT NULL,
-  `longitud` FLOAT NOT NULL,
+  `latitud` DECIMAL(10, 8) NOT NULL,
+  `longitud` DECIMAL(11, 8) NOT NULL,
   PRIMARY KEY (`idubicacion`),
   INDEX `fk_ubicacion_negocio1_idx` (`negocio_idnegocio` ASC)  ,
   CONSTRAINT `fk_ubicacion_negocio1`
