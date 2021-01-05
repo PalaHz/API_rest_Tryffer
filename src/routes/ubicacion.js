@@ -39,7 +39,7 @@ router.post('/ubicacion', (req, res) => {
         });
 });
 router.put('/ubicacion/:idubicacion', (req,res) => {
-    const {idubicacion, negocio_idnegocio, referencia,
+    const {negocio_idnegocio, referencia,
         latitud, longitud} = req.body;
     const { idubicacion } = req.params;
     const query = `
