@@ -40,17 +40,17 @@ router.post('/negocio', (req, res) => {
 });
 
 
-router.put('/representante/:idrepresentante', (req,res) => {
-    const { nombre, apellido, cedula, ruc, 
-        celular} = req.body;
-    const { idrepresentante } = req.params;
+router.put('/negocio/:idnegocio', (req,res) => {
+    const {nombre, descripcion, logo, horaApertura, horaCierre,
+        telefono, sitioWeb, representante} = req.body;
+    const { idnegocio } = req.params;
     const query = `
-        CALL representanteAddOrEdit(?, ?, ?, ?, ?, ?);
+        CALL negocioAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
-    mysqlConnection.query(query, [idrepresentante, nombre, apellido, cedula, ruc, 
-        celular], (err, rows, fields) =>{
+    mysqlConnection.query(query, [idnegocio, nombre, descripcion, logo, horaApertura, horaCierre,
+        telefono, sitioWeb, representante], (err, rows, fields) =>{
             if(!err) {
-                res.json({status: 'Representante agregado'});
+                res.json({status: 'Negocio agregado'});
             } else {
                 console.log(err);
             }
