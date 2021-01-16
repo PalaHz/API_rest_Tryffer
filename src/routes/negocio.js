@@ -40,17 +40,17 @@ router.post('/negocio', (req, res) => {
 });
 
 
-router.put('/negocio/:idnegocio', (req,res) => {
+router.put('/negocio/:id', (req,res) => {
     const {nombre, descripcion, logo, horaApertura, horaCierre,
         telefono, sitioWeb, representante} = req.body;
-    const { idnegocio } = req.params;
+    const { id } = req.params;
     const query = `
         CALL negocioAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
-    mysqlConnection.query(query, [idnegocio, nombre, descripcion, logo, horaApertura, horaCierre,
+    mysqlConnection.query(query, [id, nombre, descripcion, logo, horaApertura, horaCierre,
         telefono, sitioWeb, representante], (err, rows, fields) =>{
             if(!err) {
-                res.json({status: 'Negocio agregado'});
+                res.json({status: 'Negocio editado'});
             } else {
                 console.log(err);
             }
