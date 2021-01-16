@@ -41,13 +41,13 @@ router.post('/negocio', (req, res) => {
 
 
 router.put('/negocio/:id', (req,res) => {
+    const { idnegocio } = req.params;
     const {nombre, descripcion, logo, horaApertura, horaCierre,
         telefono, sitioWeb, representante} = req.body;
-    const { id } = req.params;
     const query = `
         CALL negocioAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
-    mysqlConnection.query(query, [id, nombre, descripcion, logo, horaApertura, horaCierre,
+    mysqlConnection.query(query, [idnegocio, nombre, descripcion, logo, horaApertura, horaCierre,
         telefono, sitioWeb, representante], (err, rows, fields) =>{
             if(!err) {
                 res.json({status: 'Negocio editado'});
