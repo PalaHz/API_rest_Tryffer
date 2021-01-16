@@ -40,7 +40,7 @@ router.post('/negocio', (req, res) => {
 });
 
 
-router.put('/negocio/:id', (req,res) => {
+router.put('/negocio/:idnegocio', (req,res) => {
     const { idnegocio } = req.params;
     const {nombre, descripcion, logo, horaApertura, horaCierre,
         telefono, sitioWeb, representante} = req.body;
