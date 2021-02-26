@@ -14,7 +14,7 @@ router.get('/oferta', (req, res) => {
 });
 router.get('/oferta/:id', (req,res) =>{
     const { id } = req.params;
-    mysqlConnection.query('SELECT * FROM oferta WHERE idoferta = ?', [id], (err, rows, fields) => {
+    mysqlConnection.query('SELECT * FROM oferta WHERE idofertas = ?', [id], (err, rows, fields) => {
         if(!err) {
             res.json(rows);
         } else {
@@ -25,12 +25,12 @@ router.get('/oferta/:id', (req,res) =>{
 
 router.post('/oferta', (req, res) => {
     const {idofertas, fechaInicio, fechaFin, nombre, descripcion,
-        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen} = req.body;
+        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen, negocioID} = req.body;
     const query = `
-        CALL ofertaAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        CALL ofertaAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
     mysqlConnection.query(query, [idofertas, fechaInicio, fechaFin, nombre, descripcion,
-        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen], (err, rows, fields) =>{
+        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen, negocioID], (err, rows, fields) =>{
             if(!err) {
                 res.json({status: 'Oferta agregada'});
             } else {
@@ -40,15 +40,15 @@ router.post('/oferta', (req, res) => {
 });
 
 
-router.put('/oferta/:idoferta', (req,res) => {
+router.put('/oferta/:idofertas', (req,res) => {
     const { idofertas } = req.params;
     const {fechaInicio, fechaFin, nombre, descripcion,
-        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen} = req.body;
+        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen, negocioID} = req.body;
     const query = `
-        CALL ofertaAddOrEdit(?, ?, ?, ?, ?, ?);
+        CALL ofertaAddOrEdit(?, ?, ?, ?, ?, ?, ?);
     `;
     mysqlConnection.query(query, [idofertas, fechaInicio, fechaFin, nombre, descripcion,
-        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen], (err, rows, fields) =>{
+        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen, negocioID], (err, rows, fields) =>{
             if(!err) {
                 res.json({status: 'Oferta editada'});
             } else {
@@ -59,7 +59,7 @@ router.put('/oferta/:idoferta', (req,res) => {
 
 router.delete('/oferta/:idofertas', (req,res) => {
     const { idofertas } = req.params;
-    mysqlConnection.query('DELETE FROM oferta WHERE idoferta = ?', [idofertas], (err,
+    mysqlConnection.query('DELETE FROM oferta WHERE idofertas = ?', [idofertas], (err,
         rows, fields) =>{
             if(!err) {
                 res.json({status: 'Oferta eliminada'});
