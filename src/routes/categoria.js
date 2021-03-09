@@ -23,6 +23,17 @@ router.get('/categoria/:id', (req,res) =>{
     });
 });
 
+router.get('/categoria/negocio/:idCategoria', (req,res) =>{
+    const { idCategoria } = req.params;
+    mysqlConnection.query('SELECT * FROM heroku_86fa010ccbe436d.negocio where idCategoria = ?', [idCategoria], (err, rows, fields) => {
+        if(!err) {
+            res.json(rows);
+        } else {
+            console.log(err);
+        }
+    });
+});
+
 router.post('/categoria', (req, res) => {
     const {idcategoria, nombre, imgCategoria, descripcion} = req.body;
     const query = `
