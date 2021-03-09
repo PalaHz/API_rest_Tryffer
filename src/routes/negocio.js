@@ -23,14 +23,26 @@ router.get('/negocio/:id', (req,res) =>{
     });
 });
 
+router.get('/negocio/oferta/:idnegocio', (req,res) =>{
+    const { idnegocio } = req.params;
+    mysqlConnection.query('SELECT * From heroku_86fa010ccbe436d.oferta WHERE negocioID = ?', [idnegocio], (err, rows, fields) => {
+        if(!err) {
+            res.json(rows);
+        } else {
+            console.log(err);
+        }
+    });
+});
+
+
 router.post('/negocio', (req, res) => {
     const {idnegocio, nombre, descripcion, logo, horaApertura, horaCierre,
-    telefono, sitioWeb, representante} = req.body;
+    telefono, sitioWeb, representante, idCategoria} = req.body;
     const query = `
-        CALL negocioAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?);
+        CALL negocioAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
     mysqlConnection.query(query, [idnegocio, nombre, descripcion, logo, horaApertura,
-        horaCierre, telefono, sitioWeb, representante], (err, rows, fields) =>{
+        horaCierre, telefono, sitioWeb, representante, idCategoria], (err, rows, fields) =>{
             if(!err) {
                 res.json({status: 'Negocio agregado'});
             } else {
@@ -43,12 +55,12 @@ router.post('/negocio', (req, res) => {
 router.put('/negocio/:idnegocio', (req,res) => {
     const { idnegocio } = req.params;
     const {nombre, descripcion, logo, horaApertura, horaCierre,
-        telefono, sitioWeb, representante} = req.body;
+        telefono, sitioWeb, representante, idCategoria} = req.body;
     const query = `
         CALL negocioAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
     mysqlConnection.query(query, [idnegocio, nombre, descripcion, logo, horaApertura, horaCierre,
-        telefono, sitioWeb, representante], (err, rows, fields) =>{
+        telefono, sitioWeb, representante, idCategoria], (err, rows, fields) =>{
             if(!err) {
                 res.json({status: 'Negocio editado'});
             } else {
