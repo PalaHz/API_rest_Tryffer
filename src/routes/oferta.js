@@ -25,9 +25,9 @@ router.get('/oferta/:id', (req, res) => {
 
 router.get('/oferta/categoria/:nombreCategoria', (req, res) => {
     const { nombreCategoria } = req.params;
-    mysqlConnection.query('SELECT * FROM heroku_86fa010ccbe436d.oferta' +
-        'WHERE negocioID' +
-        'IN (SELECT idnegocio FROM heroku_86fa010ccbe436d.negocio WHERE idCategoria' +
+    mysqlConnection.query('SELECT * FROM heroku_86fa010ccbe436d.oferta ' +
+        'WHERE negocioID ' +
+        'IN (SELECT idnegocio FROM heroku_86fa010ccbe436d.negocio WHERE idCategoria ' +
         'IN (SELECT idCategoria FROM heroku_86fa010ccbe436d.categoria WHERE nombre = "?"));', [nombreCategoria], (err, rows, fields) => {
             if (!err) {
                 res.json(rows);
