@@ -34,17 +34,6 @@ router.get('/categoria/negocio/:idCategoria', (req, res) => {
     });
 });
 
-router.get('/categoria/oferta/:idOferta', (req, res) => {
-    const { idOferta } = req.params;
-    mysqlConnection.query('SELECT * FROM heroku_86fa010ccbe436d.categoria WHERE idCategoria IN (SELECT idcategoria FROM heroku_86fa010ccbe436d.negocio WHERE idnegocio IN (SELECT negocioID FROM heroku_86fa010ccbe436d.oferta WHERE idofertas = ?) );', [idOferta], (err, rows, fields) => {
-        if (!err) {
-            res.json(rows);
-        } else {
-            console.log(err);
-        }
-    });
-});
-
 router.post('/categoria', (req, res) => {
     const { idcategoria, nombre, imgCategoria, descripcion } = req.body;
     const query = `
