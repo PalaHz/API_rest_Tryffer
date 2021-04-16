@@ -23,12 +23,18 @@ router.get('/oferta/:id', (req, res) => {
     });
 });
 
-router.get('/oferta/categoria/:nombreCategoria', (req, res) => {
-    const { nombreCategoria } = req.params;
-    mysqlConnection.query('SELECT * FROM heroku_86fa010ccbe436d.oferta ' +
-        'WHERE negocioID ' +
-        'IN (SELECT idnegocio FROM heroku_86fa010ccbe436d.negocio WHERE idCategoria ' +
-        'IN (SELECT idCategoria FROM heroku_86fa010ccbe436d.categoria WHERE nombre = ?));', [nombreCategoria], (err, rows, fields) => {
+router.get('/oferta/categoria/:idCategoria', (req, res) => {
+    const { idCategoria } = req.params;
+    mysqlConnection.query('SELECT oferta.* From heroku_86fa010ccbe436d.oferta ' +
+        'INNER JOIN heroku_86fa010ccbe436d.producto ' +
+        'ON oferta.producto_idproductos = producto.idproductos ' +
+        'INNER JOIN heroku_86fa010ccbe436d.negocio ' +
+        'ON negocio.idnegocio = producto.negocio_idnegocio ' +
+        'INNER JOIN heroku_86fa010ccbe436d.subcategoria ' +
+        'ON subcategoria.idSubcategoria = negocio.idSubcategoria ' +
+        'INNER JOIN heroku_86fa010ccbe436d.categoria ' +
+        'ON categoria.idcategoria = subcategoria.categoria_idcategoria ' +
+        'AND categoria.idcategoria = ?;', [idCategoria], (err, rows, fields) => {
             if (!err) {
                 res.json(rows);
             } else {
@@ -49,14 +55,13 @@ router.post('/oferta', (req, res) => {
         repiteSemanal,
         repiteMensual,
         producto_idproductos,
-        imagen,
-        negocioID
+        imagen
     } = req.body;
     const query = `
-        CALL ofertaAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        CALL ofertaAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
     mysqlConnection.query(query, [idofertas, fechaInicio, fechaFin, nombre, descripcion,
-        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen, negocioID
+        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen
     ], (err, rows, fields) => {
         if (!err) {
             res.json({ status: 'Oferta agregada' });
