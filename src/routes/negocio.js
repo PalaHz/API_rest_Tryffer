@@ -28,7 +28,7 @@ router.get('/negocio/oferta/:idnegocio', (req, res) => {
     mysqlConnection.query('SELECT oferta.* From heroku_86fa010ccbe436d.oferta' +
         'INNER JOIN heroku_86fa010ccbe436d.producto ' +
         'ON oferta.producto_idproductos = producto.idproductos' +
-        'AND producto.negocio_idnegocio = ?;', [idnegocio], (err, rows, fields) => {
+        'WHERE producto.negocio_idnegocio = ?;', [idnegocio], (err, rows, fields) => {
             if (!err) {
                 res.json(rows);
             } else {
