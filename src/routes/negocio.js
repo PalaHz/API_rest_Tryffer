@@ -25,7 +25,7 @@ router.get('/negocio/:id', (req, res) => {
 
 router.get('/negocio/oferta/:idnegocio', (req, res) => {
     const { idnegocio } = req.params;
-    mysqlConnection.query('SELECT oferta.* From heroku_86fa010ccbe436d.oferta' +
+    mysqlConnection.query('SELECT oferta.* From heroku_86fa010ccbe436d.oferta ' +
         'INNER JOIN heroku_86fa010ccbe436d.producto ' +
         'ON oferta.producto_idproductos = producto.idproductos ' +
         'WHERE producto.negocio_idnegocio = ? ;', [idnegocio], (err, rows, fields) => {
