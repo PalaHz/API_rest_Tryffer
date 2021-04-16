@@ -51,17 +51,16 @@ router.post('/oferta', (req, res) => {
         fechaFin,
         nombre,
         descripcion,
-        incentivo,
         repiteSemanal,
         repiteMensual,
         producto_idproductos,
         imagen
     } = req.body;
     const query = `
-        CALL ofertaAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        CALL ofertaAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
     mysqlConnection.query(query, [idofertas, fechaInicio, fechaFin, nombre, descripcion,
-        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen
+        repiteSemanal, repiteMensual, producto_idproductos, imagen
     ], (err, rows, fields) => {
         if (!err) {
             res.json({ status: 'Oferta agregada' });
@@ -79,18 +78,16 @@ router.put('/oferta/:idofertas', (req, res) => {
         fechaFin,
         nombre,
         descripcion,
-        incentivo,
         repiteSemanal,
         repiteMensual,
         producto_idproductos,
-        imagen,
-        negocioID
+        imagen
     } = req.body;
     const query = `
-        CALL ofertaAddOrEdit(?, ?, ?, ?, ?, ?, ?);
+        CALL ofertaAddOrEdit(?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
     mysqlConnection.query(query, [idofertas, fechaInicio, fechaFin, nombre, descripcion,
-        incentivo, repiteSemanal, repiteMensual, producto_idproductos, imagen, negocioID
+        repiteSemanal, repiteMensual, producto_idproductos, imagen
     ], (err, rows, fields) => {
         if (!err) {
             res.json({ status: 'Oferta editada' });
