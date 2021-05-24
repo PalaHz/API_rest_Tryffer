@@ -43,6 +43,20 @@ router.get('/oferta/categoria/:idCategoria', (req, res) => {
         });
 });
 
+router.get('/oferta/negocio/:idOferta', (req, res) => {
+    const { idOferta } = req.params;
+    mysqlConnection.query('SELECT negocio.* From heroku_86fa010ccbe436d.negocio ' +
+        'INNER JOIN producto ' +
+        'ON negocio.idnegocio = producto.negocio_idnegocio ' +
+        'INNER JOIN oferta ON oferta.producto_idproductos = producto.idproductos ' +
+        'AND oferta.idofertas = ?;', [idOferta], (err, rows, fields) => {
+            if (!err) {
+                res.json(rows);
+            } else {
+                console.log(err);
+            }
+        });
+});
 
 router.post('/oferta', (req, res) => {
     const {
