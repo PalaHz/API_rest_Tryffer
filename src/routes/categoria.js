@@ -22,16 +22,19 @@ router.get('/categoria/:id', (req, res) => {
         }
     });
 });
-
 router.get('/categoria/negocio/:idCategoria', (req, res) => {
     const { idCategoria } = req.params;
-    mysqlConnection.query('SELECT * FROM heroku_86fa010ccbe436d.negocio where idCategoria = ?', [idCategoria], (err, rows, fields) => {
-        if (!err) {
-            res.json(rows);
-        } else {
-            console.log(err);
-        }
-    });
+    mysqlConnection.query('SELECT negocio.* From heroku_86fa010ccbe436d.negocio ' +
+        'INNER JOIN subcategoria ' +
+        'ON negocio.idSubcategoria = subcategoria.idSubcategoria ' +
+        'INNER JOIN categoria ON subcategoria.categoria_idcategoria = categoria.idcategoria ' +
+        'AND categoria.idcategoria = ?;', [idCategoria], (err, rows, fields) => {
+            if (!err) {
+                res.json(rows);
+            } else {
+                console.log(err);
+            }
+        });
 });
 
 router.post('/categoria', (req, res) => {
