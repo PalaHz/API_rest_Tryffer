@@ -37,7 +37,7 @@ router.get('/subcategoria/negocio/:idSubcategoria', (req, res) => {
 router.post('/subcategoria', (req, res) => {
     const { idsubcategoria, nombre, img, descripcion, categoria_idcategoria } = req.body;
     const query = `
-        CALL subcategoriaAddOrEdit(?, ?, ?, ?);
+        CALL subcategoriaAddOrEdit(?, ?, ?, ?, ?);
     `;
     mysqlConnection.query(query, [idsubcategoria, nombre, img, descripcion, categoria_idcategoria], (err, rows, fields) => {
         if (!err) {
